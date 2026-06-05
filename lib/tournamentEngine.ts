@@ -234,9 +234,9 @@ export function buildScoreSequence(
 export const ROUND_NAMES = ["QUARTERFINAL", "SEMIFINAL", "FINAL"] as const;
 
 export const DIFFICULTY_LABELS: Record<string, string> = {
-  easy:   "AMATEUR",
-  medium: "VETERAN",
-  hard:   "ELITE",
+  easy:   "ROOKIE",
+  medium: "ALL-STAR",
+  hard:   "HALL-OF-FAME",
 };
 
 export const DIFFICULTY_COLORS: Record<string, string> = {
