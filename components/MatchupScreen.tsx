@@ -68,7 +68,7 @@ function BuffsPanel({ buffs }: { buffs: Buff[] }) {
       {cpu.map((b) => (
         <div key={b.name} className="flex items-center justify-between gap-3">
           <span className="font-pixel text-[9px] whitespace-nowrap shrink-0" style={{ color: "#FF2D78" }}>
-            ⚡ {b.name}
+            ★ {b.name}
           </span>
           <span className="font-pixel text-[7px] text-[#FF2D7860] text-right">
             {BUFF_DESC[b.name] ?? b.label}
@@ -165,8 +165,7 @@ export default function MatchupScreen({
           {}
           {matchPhase === "tipoff" && (
             <div className="w-full flex flex-col gap-10 md:gap-14 slide-up cursor-pointer" onClick={advanceToPlaying}>
-              <div className="flex items-start justify-between gap-4 md:gap-8">
-
+              <div className="flex items-center justify-between gap-4 md:gap-8">
                 {}
                 <div className="flex-1 min-w-0 text-right">
                   <div className="font-pixel text-[8px] md:text-[11px] text-[#39FF14] tracking-wide mb-4 md:mb-6 neon-green leading-tight">
@@ -180,11 +179,13 @@ export default function MatchupScreen({
                 </div>
 
                 {}
-                <div
-                  className="font-pixel text-5xl md:text-7xl shrink-0 leading-none flicker"
-                  style={{ color: "#FFB800", textShadow: "0 0 24px #FFB800, 0 0 50px #FFB80088" }}
-                >
-                  VS
+                <div className="flex items-center justify-center" style={{ height: "100%" }}>
+                  <div
+                      className="font-pixel text-5xl md:text-7xl shrink-0 leading-none flicker"
+                      style={{ color: "#FFB800", textShadow: "0 0 24px #FFB800, 0 0 50px #FFB80088" }}
+                  >
+                    VS
+                  </div>
                 </div>
 
                 {}
@@ -323,7 +324,7 @@ export default function MatchupScreen({
 
               {!matchResult.win && (
                 <div className="font-pixel text-[13px] md:text-[16px] text-[#FF2D78] blink tracking-widest neon-pink">
-                  ✕ GAME OVER ✕
+                  GAME OVER
                 </div>
               )}
               {matchResult.win && (

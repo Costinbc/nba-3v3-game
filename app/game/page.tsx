@@ -18,6 +18,7 @@ import {
   ROUND_NAMES,
 } from "@/lib/tournamentEngine";
 import RosterBar from "@/components/RosterBar";
+import HowToPlayButton from "@/components/HowToPlay";
 import PackDraft from "@/components/PackDraft";
 import SwapScreen from "@/components/SwapScreen";
 import BracketScreen from "@/components/BracketScreen";
@@ -230,12 +231,15 @@ function GameContent() {
         className="flex items-center justify-between px-4 py-3 border-b-2 border-[#39FF1420] bg-[#08080c] shrink-0"
         style={{ boxShadow: "0 2px 16px #39FF1410" }}
       >
-        <a
-          href="/"
-          className="arcade-btn font-pixel text-[8px] text-[#ffffff33] hover:text-[#39FF14] transition-colors tracking-wider"
-        >
-          ◀ BACK
-        </a>
+        <div className="flex items-center gap-2">
+          <a
+            href="/"
+            className="arcade-btn font-pixel text-[8px] text-[#ffffff33] hover:text-[#39FF14] transition-colors tracking-wider"
+          >
+            ◀ BACK
+          </a>
+          <HowToPlayButton />
+        </div>
 
         {}
         {state.phase === "draft-pool" && (

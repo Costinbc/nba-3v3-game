@@ -63,13 +63,13 @@ export default function TournamentResult({
     (sum, r) => sum + diffWeight(r.cpuTeam.difficulty) * (r.win ? 1 : 0.5), 0
   );
   const compGrade  = compScore >= 6 ? "S" : compScore >= 4 ? "A" : compScore >= 1.5 ? "B" : "C";
-  const compLabel  = wins === 3 ? "champion" : wins === 2 ? "finalist" : wins === 1 ? "semifinalist" : "1st round";
+  const compLabel  = wins === 3 ? "champion" : wins === 2 ? "finalist" : wins === 1 ? "conference finalist" : "1st round";
 
   const statusLabel =
     isChampion           ? "TOURNAMENT CHAMPION"
     : roundResults.length === 3 ? "RUNNER-UP"
-    : roundResults.length === 2 ? "SEMIFINALIST"
-    : "QUARTERFINALIST";
+    : roundResults.length === 2 ? "CONFERENCE FINALIST"
+    : "1SR ROUND EXIT";
 
   async function handleSave() {
     if (!cardRef.current || saving) return;
