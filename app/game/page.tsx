@@ -128,7 +128,7 @@ function reducer(state: GameState, action: Action): GameState {
 
     case "START_MATCHUP": {
       const cpu    = state.cpuTeams[state.tournamentRound - 1];
-      const result = simulateMatch(state.roster, cpu.roster);
+      const result = simulateMatch(state.roster, cpu.roster, cpu.difficulty);
       return { ...state, phase: "matchup", currentMatchResult: result };
     }
 
@@ -283,7 +283,7 @@ function GameContent() {
         )}
 
         <div className="font-pixel text-[8px] text-[#ffffff22] tracking-widest">
-          {state.mode.toUpperCase()}
+          {state.mode === "hidden" ? "BALL KNOWER" : "CLASSIC"}
         </div>
       </header>
 

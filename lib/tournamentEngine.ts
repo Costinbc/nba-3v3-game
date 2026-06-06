@@ -37,9 +37,11 @@ export function generateCPUTeams(
     );
 
     if (pool.length < 3) {
+      // Widen the range by ±10 first, then fall back to closest above the floor
+      const floor = min - 10;
+      const wider = available.filter((p) => p.pctOverall >= floor && isAvail(p));
       const mid = (min + max) / 2;
-      pool = available
-        .filter((p) => isAvail(p))
+      pool = (wider.length >= 3 ? wider : available.filter((p) => isAvail(p)))
         .sort((a, b) => Math.abs(a.pctOverall - mid) - Math.abs(b.pctOverall - mid));
     }
 
@@ -170,17 +172,26 @@ function teamStrength(players: Player[]): number {
        + avg(players.map((p) => p.defenseRating)) * 0.45;
 }
 
-const MAX_DIFF = 20;
+// How much strength the CPU gets added on top of their raw ratings per difficulty
+const DIFFICULTY_BONUS: Record<string, number> = {
+  easy:   0,
+  medium: 3,
+  hard:   8,
+};
+
+// How large a margin you need for a shutout (opponent scores 0)
+const MAX_DIFF = 22;
 
 export function simulateMatch(
   yourRoster: RosterSlot[],
-  cpuRoster: RosterSlot[]
+  cpuRoster: RosterSlot[],
+  difficulty: "easy" | "medium" | "hard" = "easy"
 ): MatchResult {
   const yours = yourRoster.map((s) => s.player).filter(Boolean) as Player[];
   const cpus  = cpuRoster.map((s) => s.player).filter(Boolean) as Player[];
 
   const yourStr = teamStrength(yours);
-  const cpuStr  = teamStrength(cpus);
+  const cpuStr  = teamStrength(cpus) + DIFFICULTY_BONUS[difficulty];
   const rawDiff = yourStr - cpuStr;
 
   const buffs = computeBuffs(teamCategories(yours), teamCategories(cpus));
@@ -190,10 +201,10 @@ export function simulateMatch(
   }
 
   const netDelta = buffs.reduce((s, b) => s + b.delta, 0);
-
   const adjustedDiff = rawDiff + netDelta;
 
-  const win = adjustedDiff >= 0;
+  // Ties go to CPU (strict >)
+  const win = adjustedDiff > 0;
   const magnitude = Math.abs(adjustedDiff);
 
   const loserScore = Math.max(0, Math.round(20 * (1 - magnitude / MAX_DIFF)));

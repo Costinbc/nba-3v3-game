@@ -29,15 +29,24 @@ export function getShortName(fullName: string): string {
 
 export function getPositionArchetype(positions: OriginalPosition[]): string {
   if (!positions || positions.length === 0) return "";
-  const isGuard = (positions.includes("PG") && positions.includes("SG")) || (positions.length === 1 && (positions[0] === "PG" || positions[0] === "SG"));
-  const isWing  = (positions.includes("SG") && positions.includes("SF")) || (positions.length === 1 && (positions[0] === "SG" || positions[0] === "SF"));
-  const isBig   = (positions.includes("PF") && positions.includes("C"))  || (positions.length === 1 && (positions[0] === "PF" || positions[0] === "C"));
-  const isHybrid = positions.length > 2 || (isGuard && isWing) || (isGuard && isBig) || (isWing && isBig);
-  if (isHybrid) return "HYBRID";
-  if (isGuard)  return "GUARD";
-  if (isBig)    return "BIG";
-  if (isWing)   return "WING";
-  return "";
+
+  // 3+ positions always = hybrid
+  if (positions.length >= 3) return "HYBRID";
+
+  if (positions.length === 1) {
+    const p = positions[0];
+    if (p === "PG" || p === "SG") return "GUARD";
+    if (p === "SF")               return "WING";
+    if (p === "PF" || p === "C")  return "BIG";
+    return "";
+  }
+
+  // Two positions — same-zone combos stay pure, cross-zone = hybrid
+  const set = new Set(positions);
+  if (set.has("PG") && set.has("SG")) return "GUARD";
+  if (set.has("SG") && set.has("SF")) return "WING";
+  if (set.has("PF") && set.has("C"))  return "BIG";
+  return "HYBRID"; // e.g. SF+PF, PG+SF, SG+PF, etc.
 }
 
 const PACK_SIZE = 5;

@@ -48,7 +48,7 @@ export default function Home() {
           style={{ boxShadow: "0 0 12px #FF2D7840, inset 0 0 12px #FF2D7808" }}
         >
           <div className="font-pixel text-sm text-[#FF2D78] mb-2 transition-all">
-            HIDDEN
+            BALL KNOWER
           </div>
           <div className="text-xs text-[#FF2D7888]">Draft from memory</div>
           <div className="absolute top-1.5 right-2 font-pixel text-[8px] text-[#FF2D7855]">▶</div>
