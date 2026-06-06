@@ -190,16 +190,6 @@ function PlayerCard({ player, mode, isForced }: { player: Player; mode: GameMode
       )}
 
       {}
-      {mode === "hidden" && (
-        <div className="flex items-center gap-3">
-          <div className="font-pixel text-[7px] text-[#ffffff33] tracking-wider">FEEL</div>
-          <div className="flex gap-1.5">
-            {Array.from({ length: Math.min(5, Math.round(player.pctOverall / 18)) }).map((_, i) => (
-              <div key={i} className="w-2.5 h-2.5" style={{ backgroundColor: tc + "70" }} />
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

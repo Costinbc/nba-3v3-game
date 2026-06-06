@@ -67,12 +67,12 @@ export default function TournamentResult({
     (sum, r) => sum + diffWeight(r.cpuTeam.difficulty) * (r.win ? 1 : 0.5), 0
   );
   const compGrade  = compScore >= 6 ? "S" : compScore >= 4 ? "A" : compScore >= 1.5 ? "B" : "C";
-  const compLabel  = wins === 3 ? "champion" : wins === 2 ? "finalist" : wins === 1 ? "conference finalist" : "1st round";
+  const compLabel  = wins === 3 ? "champions" : wins === 2 ? "finalists" : wins === 1 ? "conference finalists" : "1st round";
 
   const statusLabel =
-    isChampion           ? "TOURNAMENT CHAMPION"
-    : roundResults.length === 3 ? "RUNNER-UP"
-    : roundResults.length === 2 ? "CONFERENCE FINALIST"
+    isChampion           ? "TOURNAMENT CHAMPIONS"
+    : roundResults.length === 3 ? "RUNNER-UPS"
+    : roundResults.length === 2 ? "CONFERENCE FINALISTS"
     : "1SR ROUND EXIT";
 
   async function handleSave() {
@@ -143,7 +143,7 @@ export default function TournamentResult({
                   className="font-pixel leading-none flicker"
                   style={{ fontSize: "clamp(1rem,6vw,1.5rem)", color: isPerfect ? "#00FFFF" : "#FFD700", textShadow: isPerfect ? "0 0 20px #00FFFF, 0 0 40px #00FFFF88" : "0 0 20px #FFD700, 0 0 40px #FFD70088" }}
                 >
-                  {isPerfect ? "PERFECT" : "CHAMPION"}
+                  {isPerfect ? "PERFECT" : "CHAMPIONS"}
                 </span>
                 <span className="font-pixel text-base" style={{ color: isPerfect ? "#00FFFF" : "#FFD700", textShadow: `0 0 12px ${isPerfect ? "#00FFFF" : "#FFD700"}` }}>★</span>
               </div>
