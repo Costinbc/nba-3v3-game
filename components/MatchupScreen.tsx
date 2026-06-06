@@ -251,10 +251,10 @@ export default function MatchupScreen({
 
                   <div className="flex-1 min-w-0">
                     <div
-                      className="font-pixel text-[10px] md:text-[13px] tracking-wider mb-3 md:mb-5 truncate"
+                      className="font-pixel text-[10px] md:text-[13px] tracking-wider mb-3 md:mb-5 leading-snug"
                       style={{ color: diffColor + "88" }}
                     >
-                      {cpuTeam.name.split(" ")[0]}
+                      {cpuTeam.name}
                     </div>
                     <div
                       className="font-pixel leading-none"
