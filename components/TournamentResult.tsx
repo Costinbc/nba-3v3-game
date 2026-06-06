@@ -60,7 +60,6 @@ export default function TournamentResult({
     avgOvr >= 100 ? "S"  : avgOvr >= 95 ? "A+" : avgOvr >= 90 ? "A"
     : avgOvr >= 85 ? "B+" : avgOvr >= 80 ? "B"  : avgOvr >= 75 ? "C+" : "C";
 
-  // Average OVR across all CPU players faced
   const allCpuPlayers = roundResults.flatMap((r) =>
     r.cpuTeam.roster.map((s) => s.player).filter(Boolean) as NonNullable<RosterSlot["player"]>[]
   );
@@ -68,7 +67,6 @@ export default function TournamentResult({
     ? Math.round(allCpuPlayers.reduce((s, p) => s + p.pctOverall, 0) / allCpuPlayers.length)
     : 0;
 
-  // Opponents grade — same OVR thresholds as squad grade
   const compGrade =
     avgCpuOvr >= 100 ? "S"  : avgCpuOvr >= 95 ? "A+" : avgCpuOvr >= 90 ? "A"
     : avgCpuOvr >= 85 ? "B+" : avgCpuOvr >= 80 ? "B"  : avgCpuOvr >= 75 ? "C+" : "C";
@@ -95,10 +93,8 @@ export default function TournamentResult({
       });
 
       if (isMobile) {
-        // Mobile: show the image inline so user can long-press → Save to Photos
         setImageDataUrl(canvas.toDataURL("image/png"));
       } else {
-        // Desktop: direct download
         const blob = await new Promise<Blob>((resolve) =>
           canvas.toBlob((b) => resolve(b!), "image/png")
         );
@@ -128,7 +124,6 @@ export default function TournamentResult({
           className="bg-[#020205] border-2 p-3 md:p-5 flex flex-col gap-2 md:gap-3"
           style={{ borderColor: accentColor + "40", boxShadow: `0 0 40px ${accentColor}18` }}
         >
-          {/* Status + Record */}
           <div className="text-center">
             {isChampion ? (
               <div className="flex items-center justify-center gap-2">
@@ -162,7 +157,6 @@ export default function TournamentResult({
             )}
           </div>
 
-          {/* Players */}
           <div className="flex flex-col gap-0.5 md:gap-1">
             {roster.map((slot) => {
               const p      = slot.player;
@@ -188,7 +182,6 @@ export default function TournamentResult({
             })}
           </div>
 
-          {/* Grades */}
           <div className="flex gap-1.5 md:gap-2">
             <div className="flex-1 border px-2.5 py-2 md:px-3 md:py-2.5 relative flex flex-col items-center justify-center" style={{ borderColor: accentColor + "30", backgroundColor: accentColor + "06" }}>
               <CornerTick color={accentColor + "50"} pos="tl" />
@@ -204,7 +197,6 @@ export default function TournamentResult({
             </div>
           </div>
 
-          {/* Round log — single-line per round */}
           <div className="flex flex-col gap-1 md:gap-1.5">
             {roundResults.map((r, i) => {
               const resultColor = r.win ? "#39FF14" : "#FF2D78";
@@ -242,7 +234,6 @@ export default function TournamentResult({
           <div className="font-pixel text-[6px] md:text-[8px] text-[#39FF14] tracking-[0.2em] text-center">63-0.app</div>
         </div>
 
-        {/* Actions */}
         <div className="flex gap-2.5 md:gap-3">
           <button
             onClick={handleSave}
@@ -266,10 +257,43 @@ export default function TournamentResult({
           </button>
         </div>
 
+        <div className="flex items-center justify-center gap-4 pb-1">
+          <a
+            href="https://www.instagram.com/basketballismyreligion/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+            className="text-[#ffffff22] hover:text-[#E1306C] transition-colors"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+            </svg>
+          </a>
+          <a
+            href="https://x.com/basketballimr"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Twitter / X"
+            className="text-[#ffffff22] hover:text-[#1DA1F2] transition-colors"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/>
+            </svg>
+          </a>
+          <div className="w-px h-3 bg-[#ffffff12]" />
+          <a
+            href="https://forms.gle/MXSxDJwdzakpR4nq9"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="arcade-btn font-pixel text-[7px] px-2.5 py-2 border border-[#ffffff18] text-[#ffffff33] hover:text-[#39FF14] hover:border-[#39FF1444] transition-colors tracking-widest"
+          >
+            FEEDBACK
+          </a>
+        </div>
+
       </div>
       </div>
 
-      {/* Mobile: full-screen image overlay for long-press saving */}
       {imageDataUrl && (
         <div className="fixed inset-0 z-[300] bg-[#020205] flex flex-col items-center justify-center p-4">
           <div className="font-pixel text-[8px] text-[#FFB800] tracking-widest mb-4 blink">

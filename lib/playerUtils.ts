@@ -30,7 +30,6 @@ export function getShortName(fullName: string): string {
 export function getPositionArchetype(positions: OriginalPosition[]): string {
   if (!positions || positions.length === 0) return "";
 
-  // 3+ positions always = hybrid
   if (positions.length >= 3) return "HYBRID";
 
   if (positions.length === 1) {
@@ -41,12 +40,11 @@ export function getPositionArchetype(positions: OriginalPosition[]): string {
     return "";
   }
 
-  // Two positions — same-zone combos stay pure, cross-zone = hybrid
   const set = new Set(positions);
   if (set.has("PG") && set.has("SG")) return "GUARD";
   if (set.has("SG") && set.has("SF")) return "WING";
   if (set.has("PF") && set.has("C"))  return "BIG";
-  return "HYBRID"; // e.g. SF+PF, PG+SF, SG+PF, etc.
+  return "HYBRID";
 }
 
 const PACK_SIZE = 5;

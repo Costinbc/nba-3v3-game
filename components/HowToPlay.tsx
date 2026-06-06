@@ -91,7 +91,6 @@ function Modal({ onClose }: { onClose: () => void }) {
     >
       <div className="w-full max-w-md px-4 py-8 flex flex-col gap-5">
 
-        {/* Header */}
         <div className="flex items-center justify-between">
           <div>
             <div className="font-pixel text-[8px] text-[#ffffff33] tracking-widest mb-1">3V3 NBA DRAFT</div>
@@ -110,7 +109,6 @@ function Modal({ onClose }: { onClose: () => void }) {
           </button>
         </div>
 
-        {/* Sections */}
         {sections.map((s) => (
           <div
             key={s.title}
@@ -138,7 +136,6 @@ function Modal({ onClose }: { onClose: () => void }) {
           </div>
         ))}
 
-        {/* Footer */}
         <div className="font-pixel text-[6px] text-[#ffffff22] tracking-widest text-center">
           TAP OUTSIDE OR ✕ TO CLOSE
         </div>
@@ -151,7 +148,6 @@ function Modal({ onClose }: { onClose: () => void }) {
 export default function HowToPlayButton() {
   const [open, setOpen] = useState(false);
 
-  // Auto-open on first ever visit
   useEffect(() => {
     if (!localStorage.getItem(SEEN_KEY)) {
       setOpen(true);
