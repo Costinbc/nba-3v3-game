@@ -60,12 +60,18 @@ export default function TournamentResult({
     avgOvr >= 100 ? "S"  : avgOvr >= 95 ? "A+" : avgOvr >= 90 ? "A"
     : avgOvr >= 85 ? "B+" : avgOvr >= 80 ? "B"  : avgOvr >= 75 ? "C+" : "C";
 
-  const diffWeight = (d: string) => d === "hard" ? 3 : d === "medium" ? 2 : 1;
-  const compScore  = roundResults.reduce(
-    (sum, r) => sum + diffWeight(r.cpuTeam.difficulty) * (r.win ? 1 : 0.5), 0
+  // Average OVR across all CPU players faced
+  const allCpuPlayers = roundResults.flatMap((r) =>
+    r.cpuTeam.roster.map((s) => s.player).filter(Boolean) as NonNullable<RosterSlot["player"]>[]
   );
-  const compGrade  = compScore >= 6 ? "S" : compScore >= 4 ? "A" : compScore >= 1.5 ? "B" : "C";
-  const compLabel  = wins === 3 ? "champions" : wins === 2 ? "finalists" : wins === 1 ? "semifinalists" : "1st round";
+  const avgCpuOvr = allCpuPlayers.length
+    ? Math.round(allCpuPlayers.reduce((s, p) => s + p.pctOverall, 0) / allCpuPlayers.length)
+    : 0;
+
+  // Opponents grade — same OVR thresholds as squad grade
+  const compGrade =
+    avgCpuOvr >= 100 ? "S"  : avgCpuOvr >= 95 ? "A+" : avgCpuOvr >= 90 ? "A"
+    : avgCpuOvr >= 85 ? "B+" : avgCpuOvr >= 80 ? "B"  : avgCpuOvr >= 75 ? "C+" : "C";
 
   const statusLabel =
     isChampion           ? "TOURNAMENT CHAMPIONS"
@@ -184,17 +190,17 @@ export default function TournamentResult({
 
           {/* Grades */}
           <div className="flex gap-1.5 md:gap-2">
-            <div className="flex-1 border px-2.5 py-2 md:px-3 md:py-2.5 text-center relative" style={{ borderColor: accentColor + "30", backgroundColor: accentColor + "06" }}>
+            <div className="flex-1 border px-2.5 py-2 md:px-3 md:py-2.5 relative flex flex-col items-center justify-center" style={{ borderColor: accentColor + "30", backgroundColor: accentColor + "06" }}>
               <CornerTick color={accentColor + "50"} pos="tl" />
               <div className="font-pixel text-[6px] md:text-[7px] text-[#ffffff33] tracking-widest mb-0.5 md:mb-1">SQUAD</div>
               <div className="font-pixel text-2xl md:text-3xl leading-none" style={{ color: accentColor, textShadow: `0 0 14px ${accentColor}88` }}>{teamGrade}</div>
               <div className="font-pixel text-[5px] md:text-[6px] text-[#ffffff33] mt-0.5 md:mt-1">avg ovr {avgOvr}</div>
             </div>
-            <div className="flex-1 border px-2.5 py-2 md:px-3 md:py-2.5 text-center relative" style={{ borderColor: "#FFB80030", backgroundColor: "#FFB80006" }}>
+            <div className="flex-1 border px-2.5 py-2 md:px-3 md:py-2.5 relative flex flex-col items-center justify-center" style={{ borderColor: "#FFB80030", backgroundColor: "#FFB80006" }}>
               <CornerTick color="#FFB80050" pos="tl" />
-              <div className="font-pixel text-[6px] md:text-[7px] text-[#ffffff33] tracking-widest mb-0.5 md:mb-1">COMP</div>
+              <div className="font-pixel text-[6px] md:text-[7px] text-[#ffffff33] tracking-widest mb-0.5 md:mb-1">OPPONENTS</div>
               <div className="font-pixel text-2xl md:text-3xl leading-none" style={{ color: "#FFB800", textShadow: "0 0 14px #FFB80088" }}>{compGrade}</div>
-              <div className="font-pixel text-[5px] md:text-[6px] text-[#ffffff33] mt-0.5 md:mt-1">{compLabel}</div>
+              <div className="font-pixel text-[5px] md:text-[6px] text-[#ffffff33] mt-0.5 md:mt-1">avg ovr {avgCpuOvr}</div>
             </div>
           </div>
 
@@ -224,7 +230,7 @@ export default function TournamentResult({
                     {cpuPlayers.map((p) => (
                       <div key={p.playerId}>
                         <div className="font-pixel text-[6px] md:text-[7px]" style={{ color: "#ffffffaa" }}>{getDisplayName(p.name, 10)}</div>
-                        <div className="font-pixel text-[5px] md:text-[6px]" style={{ color: "#ffffff44" }}>{p.team}  {p.era}</div>
+                        <div className="font-pixel text-[5px] md:text-[6px]" style={{ color: "#ffffff44" }}>{p.team}  {p.era}  <span style={{ color: "#39FF1466" }}>OVR {Math.round(p.pctOverall)}</span></div>
                       </div>
                     ))}
                   </div>

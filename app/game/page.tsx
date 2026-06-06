@@ -128,7 +128,7 @@ function reducer(state: GameState, action: Action): GameState {
 
     case "START_MATCHUP": {
       const cpu    = state.cpuTeams[state.tournamentRound - 1];
-      const result = simulateMatch(state.roster, cpu.roster);
+      const result = simulateMatch(state.roster, cpu.roster, cpu.difficulty);
       return { ...state, phase: "matchup", currentMatchResult: result };
     }
 
