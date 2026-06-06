@@ -31,6 +31,10 @@ export default function TournamentResult({
   const [saving, setSaving]   = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
+  const isIOS =
+      typeof navigator !== "undefined" &&
+      /iPad|iPhone|iPod/.test(navigator.userAgent);
+
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 300);
     return () => clearTimeout(t);
@@ -83,10 +87,31 @@ export default function TournamentResult({
         logging: false,
         useCORS: true,
       });
-      const link = document.createElement("a");
-      link.download = "3v3-squad-card.png";
-      link.href = canvas.toDataURL("image/png");
-      link.click();
+      const blob = await new Promise<Blob>((resolve) =>
+          canvas.toBlob((b) => resolve(b!), "image/png")
+      );
+
+      const file = new File(
+          [blob],
+          "3v3-squad-card.png",
+          { type: "image/png" }
+      );
+
+      const shouldUseShare =
+          isIOS &&
+          navigator.canShare?.({ files: [file] });
+
+      if (shouldUseShare) {
+        await navigator.share({
+          files: [file],
+          title: "My 3V3 Squad",
+        });
+      } else {
+        const link = document.createElement("a");
+        link.download = "3v3-squad-card.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      }
     } finally {
       setSaving(false);
     }
@@ -228,7 +253,7 @@ export default function TournamentResult({
           </div>
 
           {}
-          <div className="font-pixel text-[6px] text-[#ffffff12] tracking-[0.2em] text-center">3V3 NBA DRAFT</div>
+          <div className="font-pixel text-[8px] text-[#39FF14] tracking-[0.2em] text-center">63-0.app</div>
         </div>
 
         {}
@@ -243,7 +268,7 @@ export default function TournamentResult({
             boxShadow:       `0 0 16px ${accentColor}40`,
           }}
         >
-          {saving ? "SAVING..." : "SAVE IMAGE"}
+          {isIOS ? "SHARE RESULT" : "SAVE IMAGE"}
         </button>
 
         <button
