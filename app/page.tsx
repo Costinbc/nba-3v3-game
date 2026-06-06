@@ -11,7 +11,7 @@ export default function Home() {
       <div className="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-[#39FF14] opacity-60" />
       <div className="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-[#39FF14] opacity-60" />
 
-      <div className="absolute top-3 right-3 z-10">
+      <div className="absolute top-5 right-5 z-10">
         <HowToPlayButton />
       </div>
 

@@ -157,7 +157,7 @@ export default function HowToPlayButton() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="arcade-btn font-pixel text-[8px] px-2.5 py-1.5 border border-[#ffffff22] text-[#ffffff44] hover:text-[#FFB800] hover:border-[#FFB80055] transition-colors tracking-wider"
+        className="arcade-btn font-pixel text-[8px] px-2.5 py-2.5 border border-[#ffffff22] text-[#ffffff44] hover:text-[#FFB800] hover:border-[#FFB80055] transition-colors tracking-wider"
       >
         ?
       </button>
