@@ -19,8 +19,8 @@ const pressStart = Press_Start_2P({
 });
 
 export const metadata: Metadata = {
-  title: "3V3 — NBA Draft",
-  description: "Draft a 3-man squad and go 82-0.",
+  title: "3v3 NBA Draft Challenge",
+  description: "Draft a 3-man squad and go 63-0.",
 };
 
 export default function RootLayout({

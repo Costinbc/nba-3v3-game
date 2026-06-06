@@ -190,7 +190,7 @@ function PlayerCard({ player, mode, isForced }: { player: Player; mode: GameMode
       )}
 
       {}
-      {mode === "hoopiq" && (
+      {mode === "hidden" && (
         <div className="flex items-center gap-3">
           <div className="font-pixel text-[7px] text-[#ffffff33] tracking-wider">FEEL</div>
           <div className="flex gap-1.5">

@@ -6,7 +6,7 @@ export type SlotLabel = "G" | "W" | "B";
 
 export type SortStat = "pts" | "reb" | "ast" | "stl" | "blk" | "composite";
 
-export type GameMode = "classic" | "hoopiq";
+export type GameMode = "classic" | "hidden";
 
 export type GamePhase =
   | "draft-pool"

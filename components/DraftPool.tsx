@@ -194,7 +194,7 @@ function DraftCard({ player, status, canPick, mode, onPick }: DraftCardProps) {
         )}
 
         {}
-        {mode === "hoopiq" && (
+        {mode === "hidden" && (
           <div className="flex gap-1 mt-1">
             {Array.from({ length: Math.min(5, Math.round(player.pctOverall / 18)) }).map(
               (_, i) => (

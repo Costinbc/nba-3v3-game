@@ -1,4 +1,5 @@
 import Link from "next/link";
+import HowToPlayButton from "@/components/HowToPlay";
 
 export default function Home() {
   return (
@@ -9,6 +10,10 @@ export default function Home() {
       <div className="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-[#39FF14] opacity-60" />
       <div className="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-[#39FF14] opacity-60" />
       <div className="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-[#39FF14] opacity-60" />
+
+      <div className="absolute top-3 right-3 z-10">
+        <HowToPlayButton />
+      </div>
 
       {}
       <div className="text-center mb-10">
@@ -38,12 +43,12 @@ export default function Home() {
         </Link>
 
         <Link
-          href="/game?mode=hoopiq"
+          href="/game?mode=hidden"
           className="arcade-btn relative group block border-2 border-[#FF2D78] bg-[#FF2D7808] px-6 py-5 text-center"
           style={{ boxShadow: "0 0 12px #FF2D7840, inset 0 0 12px #FF2D7808" }}
         >
           <div className="font-pixel text-sm text-[#FF2D78] mb-2 transition-all">
-            HOOP IQ
+            HIDDEN
           </div>
           <div className="text-xs text-[#FF2D7888]">Draft from memory</div>
           <div className="absolute top-1.5 right-2 font-pixel text-[8px] text-[#FF2D7855]">▶</div>

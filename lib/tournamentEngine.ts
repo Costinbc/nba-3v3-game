@@ -231,7 +231,7 @@ export function buildScoreSequence(
   return body;
 }
 
-export const ROUND_NAMES = ["QUARTERFINAL", "SEMIFINAL", "FINAL"] as const;
+export const ROUND_NAMES = ["1ST ROUND", "SEMIFINALS", "FINALS"] as const;
 
 export const DIFFICULTY_LABELS: Record<string, string> = {
   easy:   "ROOKIE",
