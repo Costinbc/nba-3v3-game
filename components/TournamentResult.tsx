@@ -27,8 +27,9 @@ export default function TournamentResult({
   roster,
   onPlayAgain,
 }: TournamentResultProps) {
-  const [visible, setVisible] = useState(false);
-  const [saving, setSaving]   = useState(false);
+  const [visible, setVisible]     = useState(false);
+  const [saving, setSaving]       = useState(false);
+  const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
 
@@ -64,13 +65,15 @@ export default function TournamentResult({
     (sum, r) => sum + diffWeight(r.cpuTeam.difficulty) * (r.win ? 1 : 0.5), 0
   );
   const compGrade  = compScore >= 6 ? "S" : compScore >= 4 ? "A" : compScore >= 1.5 ? "B" : "C";
-  const compLabel  = wins === 3 ? "champions" : wins === 2 ? "finalists" : wins === 1 ? "conference finalists" : "1st round";
+  const compLabel  = wins === 3 ? "champions" : wins === 2 ? "finalists" : wins === 1 ? "semifinalists" : "1st round";
 
   const statusLabel =
     isChampion           ? "TOURNAMENT CHAMPIONS"
-    : roundResults.length === 3 ? "RUNNER-UPS"
-    : roundResults.length === 2 ? "CONFERENCE FINALISTS"
-    : "1SR ROUND EXIT";
+    : roundResults.length === 3 ? "RUNNER-UP"
+    : roundResults.length === 2 ? "SEMIFINALISTS"
+    : "1ST ROUND EXIT";
+
+  const isMobile = typeof navigator !== "undefined" && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   async function handleSave() {
     if (!cardRef.current || saving) return;
@@ -84,28 +87,21 @@ export default function TournamentResult({
         logging: false,
         useCORS: true,
       });
-      const blob = await new Promise<Blob>((resolve) =>
-        canvas.toBlob((b) => resolve(b!), "image/png")
-      );
-      const file = new File([blob], "3v3-squad-card.png", { type: "image/png" });
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-      // Mobile: use share sheet (covers iOS Chrome/Safari, Android)
-      if (isMobile && navigator.canShare?.({ files: [file] })) {
-        try {
-          await navigator.share({ files: [file], title: "My 3V3 Squad" });
-          return;
-        } catch {
-          // User cancelled or share failed — fall through to download
-        }
+      if (isMobile) {
+        // Mobile: show the image inline so user can long-press → Save to Photos
+        setImageDataUrl(canvas.toDataURL("image/png"));
+      } else {
+        // Desktop: direct download
+        const blob = await new Promise<Blob>((resolve) =>
+          canvas.toBlob((b) => resolve(b!), "image/png")
+        );
+        const link = document.createElement("a");
+        link.download = "3v3-squad-card.png";
+        link.href = URL.createObjectURL(blob);
+        link.click();
+        URL.revokeObjectURL(link.href);
       }
-
-      // Desktop: direct download
-      const link = document.createElement("a");
-      link.download = "3v3-squad-card.png";
-      link.href = URL.createObjectURL(blob);
-      link.click();
-      URL.revokeObjectURL(link.href);
     } finally {
       setSaving(false);
     }
@@ -208,7 +204,6 @@ export default function TournamentResult({
               const resultColor = r.win ? "#39FF14" : "#FF2D78";
               const cpuPlayers  = r.cpuTeam.roster
                 .map((s) => s.player).filter(Boolean) as NonNullable<RosterSlot["player"]>[];
-              const names = cpuPlayers.map((p) => getDisplayName(p.name, 10)).join("  ");
               return (
                 <div
                   key={i}
@@ -218,13 +213,20 @@ export default function TournamentResult({
                   <CornerTick color={resultColor + "40"} pos="tl" />
                   <div className="flex items-center gap-2 md:gap-3">
                     <span className="font-pixel text-[7px] md:text-[8px] w-3.5 shrink-0 text-center" style={{ color: resultColor }}>{r.win ? "W" : "L"}</span>
-                    <span className="font-pixel text-[6px] md:text-[7px] text-[#ffffff33] tracking-wider shrink-0">{r.roundName}</span>
-                    <span className="font-pixel text-[6px] md:text-[7px] flex-1 min-w-0 whitespace-nowrap" style={{ color: "#ffffff55" }}>{names}</span>
+                    <span className="font-pixel text-[6px] md:text-[7px] text-[#ffffff33] tracking-wider flex-1">{r.roundName}</span>
                     <span className="font-pixel text-[8px] md:text-[10px] shrink-0">
                       <span style={{ color: resultColor }}>{r.yourScore}</span>
                       <span className="text-[#ffffff22] mx-0.5 md:mx-1">–</span>
                       <span style={{ color: r.win ? "#FF2D78" : "#39FF14" }}>{r.cpuScore}</span>
                     </span>
+                  </div>
+                  <div className="flex gap-3 mt-1 pl-5 flex-wrap">
+                    {cpuPlayers.map((p) => (
+                      <div key={p.playerId}>
+                        <div className="font-pixel text-[6px] md:text-[7px]" style={{ color: "#ffffffaa" }}>{getDisplayName(p.name, 10)}</div>
+                        <div className="font-pixel text-[5px] md:text-[6px]" style={{ color: "#ffffff44" }}>{p.team}  {p.era}</div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               );
@@ -260,6 +262,26 @@ export default function TournamentResult({
 
       </div>
       </div>
+
+      {/* Mobile: full-screen image overlay for long-press saving */}
+      {imageDataUrl && (
+        <div className="fixed inset-0 z-[300] bg-[#020205] flex flex-col items-center justify-center p-4">
+          <div className="font-pixel text-[8px] text-[#FFB800] tracking-widest mb-4 blink">
+            HOLD IMAGE TO SAVE
+          </div>
+          <img
+            src={imageDataUrl}
+            alt="Squad card"
+            className="w-full max-w-sm border border-[#ffffff15]"
+          />
+          <button
+            onClick={() => setImageDataUrl(null)}
+            className="arcade-btn font-pixel text-[10px] py-3 px-8 mt-4 border border-[#ffffff22] text-[#ffffff55] tracking-widest"
+          >
+            BACK
+          </button>
+        </div>
+      )}
     </div>
   );
 }
