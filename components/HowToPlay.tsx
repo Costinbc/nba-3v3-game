@@ -9,10 +9,10 @@ const sections = [
     color: "#b46002",
     title: "THE BASICS",
     steps: [
-        "Draft a squad of 3 NBA players and take them through a 3-round tournament.",
-        "Each round is a 3v3 game against a CPU team. First to 21 wins.",
-        "Win all 3 rounds, 63-0, to become champion and earn your grade.",
-        ],
+      "Draft a squad of 3 NBA players and take them through a 3-round tournament.",
+      "Each round is a 3v3 game against a CPU team. First to 21 wins.",
+      "Win all 3 rounds to become champions. Win every game 21-0 for a perfect run.",
+    ],
   },
   {
     color: "#39FF14",
@@ -28,16 +28,17 @@ const sections = [
     color: "#FFB800",
     title: "THE GAMBLE",
     steps: [
-      "Before the tournament you can one chance to swap a player on your squad for a random new one.",
+      "Before the tournament you get one chance to swap a player on your squad for a random new one.",
     ],
   },
   {
     color: "#FF2D78",
     title: "THE TOURNAMENT",
     steps: [
-      "3 rounds. Each game is played to 21 points.",
-      "The aim is to win all games 21-0 and finish with a perfect 63-0 record.",
-      "Opponents get progressively better each round.",
+      "3 rounds. Each game is first to 21.",
+      "Opponents get progressively tougher each round",
+      "Tougher opponents get a hidden strength boost. Expect to work for every win.",
+      "The better team always wins, closer matchups just mean a closer score.",
     ],
   },
   {
@@ -51,11 +52,21 @@ const sections = [
     ],
   },
   {
+    color: "#FF9944",
+    title: "OVR ISN'T EVERYTHING",
+    steps: [
+      "OVR gives a rough idea of quality but matches run on offense and defense ratings.",
+      "Offense counts slightly more than defense.",
+      "A player with high OVR but weak defense can drag your team down.",
+      "Buffs matter. A balanced lineup can beat a higher rated one.",
+    ],
+  },
+  {
     color: "#BF7FFF",
     title: "MODES",
     steps: [
-      "CLASSIC: full stats visible while drafting. Play with info.",
-      "HIDDEN mode: stats are hidden. Draft from memory alone.",
+      "CLASSIC: full stats visible while drafting.",
+      "BALL KNOWER: stats are hidden. Draft from memory alone.",
     ],
   },
   {
@@ -63,9 +74,8 @@ const sections = [
     title: "YOUR GRADES",
     steps: [
       "SQUAD: based on the average OVR of your 3 players.",
-      "COMP: based on how tough your opponents were and if you beat them.",
-      "Go 3-0 against Elite teams for the best competition score.",
-      "Shut out every opponent (21-0 each round) for a perfect run.",
+      "OPPONENTS: based on the average OVR of every team you faced.",
+      "Both use the same scale. Compare them to see how you measured up.",
     ],
   },
 ];

@@ -283,7 +283,7 @@ function GameContent() {
         )}
 
         <div className="font-pixel text-[8px] text-[#ffffff22] tracking-widest">
-          {state.mode.toUpperCase()}
+          {state.mode === "hidden" ? "BALL KNOWER" : "CLASSIC"}
         </div>
       </header>
 
