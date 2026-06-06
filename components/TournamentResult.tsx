@@ -85,12 +85,34 @@ export default function TournamentResult({
     try {
       await document.fonts.ready;
       const html2canvas = (await import("html2canvas")).default;
-      const canvas = await html2canvas(cardRef.current, {
+      const captured = await html2canvas(cardRef.current, {
         backgroundColor: "#020205",
         scale: 2,
         logging: false,
         useCORS: true,
       });
+
+      // Compose onto a strict 1080x1350 (4:5) canvas for social sharing
+      const TARGET_W = 1080;
+      const TARGET_H = 1350;
+      const PAD = 56;
+      const canvas = document.createElement("canvas");
+      canvas.width = TARGET_W;
+      canvas.height = TARGET_H;
+      const ctx = canvas.getContext("2d")!;
+      ctx.fillStyle = "#020205";
+      ctx.fillRect(0, 0, TARGET_W, TARGET_H);
+      const scale = Math.min(
+        (TARGET_W - PAD * 2) / captured.width,
+        (TARGET_H - PAD * 2) / captured.height
+      );
+      const drawW = captured.width * scale;
+      const drawH = captured.height * scale;
+      const dx = (TARGET_W - drawW) / 2;
+      const dy = (TARGET_H - drawH) / 2;
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+      ctx.drawImage(captured, dx, dy, drawW, drawH);
 
       if (isMobile) {
         setImageDataUrl(canvas.toDataURL("image/png"));
